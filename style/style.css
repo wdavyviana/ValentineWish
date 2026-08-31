@@ -1,300 +1,312 @@
-html {
+* {
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
-  font-family: "Work Sans", sans-serif;
+  padding: 0;
+  width: 100%;
+  height: 100%;
 }
 
-.container {
-  height: 100vh;
-  width: 100vh;
-  margin: 0 auto;
-  text-align: center;
-  visibility: hidden;
-  position: relative;
+body {
+  background: #111;
+  color: #f5f5f5;
+
+  font-family: "DM Sans", sans-serif;
+
   overflow: hidden;
 }
 
-.container div.six {
-  top: 10vh;
-  z-index: 1;
-}
 
-.container div.seven,
-.container div.eight {
-  width: 100vw;
+/* =========================
+   HISTÓRIA
+========================= */
+
+.story {
+  width: 100%;
   height: 100vh;
-  position: fixed;
-  top: 0;
+  position: relative;
 }
 
-.container > div {
+
+/* =========================
+   CENAS
+========================= */
+
+.scene {
   position: absolute;
+
+  width: 100%;
+  height: 100vh;
+
+  top: 0;
   left: 0;
-  right: 0;
-  top: 20vh;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 30px;
 }
 
-.one {
-  font-size: 4.5rem;
+
+/* =========================
+   TEXTO
+========================= */
+
+.scene p,
+.scene h1,
+.scene h2 {
+
+  margin: 0;
+
+  max-width: 900px;
+
+  font-weight: 400;
+
+  letter-spacing: -0.03em;
+
+  line-height: 1.25;
 }
 
-.one > img {
-  vertical-align: middle;
-  margin-bottom: 10px;
-  max-width: 100%;
-  height: auto;
+
+/* Texto principal */
+
+.scene p {
+
+  font-size: clamp(
+    1.7rem,
+    5vw,
+    3.2rem
+  );
+
 }
 
-.two {
-  font-size: 1.2rem;
-  font-weight: lighter;
+
+/* Primeira frase */
+
+.scene h1 {
+
+  font-size: clamp(
+    2.5rem,
+    8vw,
+    5rem
+  );
+
+  font-weight: 500;
+
 }
 
-.three {
+
+/* Data */
+
+.scene.date p {
+
+  font-size: clamp(
+    2.5rem,
+    9vw,
+    5.5rem
+  );
+
+  font-weight: 500;
+
+}
+
+
+/* =========================
+   FOTO
+========================= */
+
+.photo-scene {
+
+  flex-direction: column;
+
+}
+
+
+.photo-scene img {
+
+  width: min(
+    80vw,
+    420px
+  );
+
+  max-height: 65vh;
+
+  object-fit: cover;
+
+  border-radius: 18px;
+
+}
+
+
+/* =========================
+   FINAL
+========================= */
+
+.final-message {
+
+  flex-direction: column;
+
+  gap: 28px;
+
+}
+
+
+.final-message h2 {
+
+  font-size: clamp(
+    2.3rem,
+    7vw,
+    4rem
+  );
+
+  font-weight: 500;
+
+}
+
+
+.final-message p {
+
+  font-size: clamp(
+    1.2rem,
+    4vw,
+    1.8rem
+  );
+
+  line-height: 1.8;
+
+  font-weight: 300;
+
+}
+
+
+/* =========================
+   ENCERRAMENTO
+========================= */
+
+.ending {
+
+  flex-direction: column;
+
+  gap: 30px;
+
+}
+
+
+.ending p {
+
+  font-size: clamp(
+    1.5rem,
+    5vw,
+    2.5rem
+  );
+
+}
+
+
+.ending span {
+
+  font-size: 2rem;
+
+}
+
+
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width: 500px) {
+
+  .scene {
+
+    padding: 25px;
+
+  }
+
+  .scene p {
+
+    max-width: 340px;
+
+  }
+
+}
+/* =========================
+   DECLARAÇÃO FINAL
+========================= */
+
+.declaration {
+  flex-direction: column;
+}
+
+.declaration p {
+  font-size: clamp(
+    2rem,
+    7vw,
+    4rem
+  );
+
+  font-weight: 400;
+
+  letter-spacing: -0.04em;
+}
+
+
+/* =========================
+   FOGOS
+========================= */
+
+.fireworks-scene {
+  background: #050505;
+  padding: 0;
+}
+
+#fireworks {
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+
+  top: 0;
+  left: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+}
+
+.fireworks-message {
+  position: relative;
+
+  z-index: 2;
+}
+
+.fireworks-message {
+  position: relative;
+
+  z-index: 2;
+}
+
+.fireworks-message p {
   font-size: 3rem;
 }
 
-.four .text-box {
-  width: 600px;
-  margin: 0 auto;
-  border: 3px solid #aaa;
-  border-radius: 5px;
-  padding: 10px;
-  position: relative;
-}
 
-.text-box p {
-  margin: 0;
-  text-align: left;
-}
+/* =========================
+   CORAÇÕES
+========================= */
 
-.text-box span {
-  visibility: hidden;
-}
-
-.text-box .fake-btn {
+.heart-particle {
   position: absolute;
-  right: 5px;
-  bottom: 5px;
-  color: #fff;
-  background-color: rgb(21, 161, 237);
-  padding: 5px 8px;
-  border-radius: 3px;
-}
 
-.five p {
-  font-size: 2rem;
-  position: absolute;
-  left: 0;
-  right: 0;
-}
+  pointer-events: none;
 
-.idea-3 strong {
-  padding: 3px 5px;
-  border-radius: 3px;
-  display: inline-block;
-}
+  font-size: 1.5rem;
 
-.five .idea-5 {
-  font-size: 4rem;
-}
-
-.idea-5 span,
-.idea-6 span,
-.wish-hbd span {
-  display: inline-block;
-}
-
-.idea-6 span {
-  font-size: 15rem;
-}
-
-.six {
-  position: relative;
-}
-
-.six img {
-  display: inline-block;
-  max-width: 45%;
-  height: auto;
-}
-
-.six .hat {
-  position: absolute;
-  width: 80px;
-  top: -35px;
-  left: 41.5%;
-  /* transform: scale(0.1); */
-}
-
-.baloons img {
-  display: inline-block;
-  position: absolute;
-  width: 200px;
-}
-
-.baloons img:nth-child(even) {
-  left: 10%;
-}
-
-.baloons img:nth-child(odd) {
-  right: 10%;
-}
-
-.baloons img:nth-child(3n + 0) {
-  left: 30%;
-}
-
-.eight svg {
-  width: 25px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  visibility: hidden;
-  z-index: -1;
-}
-
-.eight svg:nth-child(1) {
-  top: 7vh;
-  left: 5vw;
-  fill: #bd6ecf;
-}
-
-.eight svg:nth-child(2) {
-  top: 23vh;
-  left: 35vw;
-  fill: #7dd175;
-}
-
-.eight svg:nth-child(3) {
-  top: 33vh;
-  left: 23vw;
-  fill: #349d8b;
-}
-
-.eight svg:nth-child(4) {
-  top: 43vh;
-  left: 57vw;
-  fill: #347a9d;
-}
-
-.eight svg:nth-child(5) {
-  top: 68vh;
-  left: 7vw;
-  fill: #c66053;
-}
-
-.eight svg:nth-child(6) {
-  top: 42vh;
-  left: 77vw;
-  fill: #bfaa40;
-}
-
-.eight svg:nth-child(7) {
-  top: 68vh;
-  left: 83vw;
-  fill: #e3bae8;
-}
-
-.eight svg:nth-child(8) {
-  top: 86vh;
-  left: 37vw;
-  fill: #8762cb;
-}
-
-.eight svg:nth-child(9) {
-  top: 94vh;
-  left: 87vw;
-  fill: #9a90da;
-}
-
-.wish-hbd {
-  font-size: 3em;
-  margin: 0;
-  /* text-transform: uppercase; */
-}
-
-.wish h5 {
-  font-weight: lighter;
-  font-size: 2rem;
-  margin: 10px 0 0;
-}
-
-.nine p {
-  font-size: 2rem;
-  font-weight: lighter;
-}
-
-#replay {
   z-index: 3;
-  cursor: pointer;
-}
-
-/* Media Queries */
-@media screen and (max-height: 1000px) {
-  .six .hat {
-    left: 40%;
-  }
-}
-
-@media screen and (max-height: 800px) {
-  .six .hat {
-    left: 37%;
-  }
-}
-
-@media screen and (max-height: 700px) {
-  .six .hat {
-    left: 32%;
-  }
-}
-
-@media screen and (max-height: 850px) and (max-width: 450px) {
-  .six .hat {
-    left: 32%;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .container {
-    width: 90%;
-  }
-
-  .four .text-box {
-    width: 90%;
-  }
-
-  .text-box .fake-btn {
-    right: 5px;
-    bottom: -38px;
-  }
-
-  .idea-5 span {
-    display: block;
-  }
-
-  .idea-6 span {
-    font-size: 10rem;
-  }
-
-  .six .hat {
-    width: 50px;
-    top: -20px;
-  }
-
-  .wish-hbd {
-    font-size: 2.3em;
-  }
-
-  .wish h5 {
-    font-size: 1.4rem;
-  }
-
-  .nine p {
-    font-size: 1.5rem;
-    font-weight: lighter;
-  }
 }

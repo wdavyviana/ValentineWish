@@ -1,305 +1,368 @@
-// Animation Timeline
-const animationTimeline = () => {
-  // Spit chars that needs to be animated individually
-  const textBoxChars = document.getElementsByClassName("hbd-chatbox")[0];
-  const hbd = document.getElementsByClassName("wish-hbd")[0];
+const scenes = document.querySelectorAll(".scene");
 
-  textBoxChars.innerHTML = `<span>${textBoxChars.innerHTML
-    .split("")
-    .join("</span><span>")}</span`;
+const tl = new TimelineMax();
 
-  hbd.innerHTML = `<span>${hbd.innerHTML
-    .split("")
-    .join("</span><span>")}</span`;
 
-  const ideaTextTrans = {
-    opacity: 0,
-    y: -20,
-    rotationX: 5,
-    skewX: "15deg",
-  };
+// =====================================================
+// CONFIGURAÇÃO
+// =====================================================
 
-  const ideaTextTransLeave = {
-    opacity: 0,
-    y: 20,
-    rotationY: 5,
-    skewX: "-15deg",
-  };
+const normalTime = 2.5;
+const fadeTime = 0.8;
 
-  const tl = new TimelineMax();
 
-  tl.to(".container", 0.1, {
-    visibility: "visible",
+// =====================================================
+// INICIALIZAÇÃO
+// =====================================================
+
+TweenMax.set(scenes, {
+  autoAlpha: 0
+});
+
+
+// =====================================================
+// CENAS 1 ATÉ 10
+// =====================================================
+
+for (let i = 0; i < 10; i++) {
+
+  tl.to(scenes[i], 1, {
+    autoAlpha: 1,
+    ease: Power2.easeOut
   })
-    .from(".one", 0.7, {
-      opacity: 0,
-      y: 10,
-    })
-    .from(".two", 0.4, {
-      opacity: 0,
-      y: 10,
-    })
-    .to(
-      ".one",
-      0.7,
-      {
-        opacity: 0,
-        y: 10,
-      },
-      "+=2.5"
-    )
-    .to(
-      ".two",
-      0.7,
-      {
-        opacity: 0,
-        y: 10,
-      },
-      "-=1"
-    )
-    .from(".three", 0.7, {
-      opacity: 0,
-      y: 10,
-      // scale: 0.7
-    })
-    .to(
-      ".three",
-      0.7,
-      {
-        opacity: 0,
-        y: 10,
-      },
-      "+=2"
-    )
-    .from(".four", 0.7, {
-      scale: 0.2,
-      opacity: 0,
-    })
-    .from(".fake-btn", 0.3, {
-      scale: 0.2,
-      opacity: 0,
-    })
-    .staggerTo(
-      ".hbd-chatbox span",
-      0.5,
-      {
-        visibility: "visible",
-      },
-      0.05
-    )
-    .to(".fake-btn", 0.1, {
-      backgroundColor: "rgb(127, 206, 248)",
-    })
-    .to(
-      ".four",
-      0.5,
-      {
-        scale: 0.2,
-        opacity: 0,
-        y: -150,
-      },
-      "+=0.7"
-    )
-    .from(".idea-1", 0.7, ideaTextTrans)
-    .to(".idea-1", 0.7, ideaTextTransLeave, "+=1.5")
-    .from(".idea-2", 0.7, ideaTextTrans)
-    .to(".idea-2", 0.7, ideaTextTransLeave, "+=1.5")
-    .from(".idea-3", 0.7, ideaTextTrans)
-    .to(".idea-3 strong", 0.5, {
-      scale: 1.2,
-      x: 10,
-      backgroundColor: "rgb(21, 161, 237)",
-      color: "#fff",
-    })
-    .to(".idea-3", 0.7, ideaTextTransLeave, "+=1.5")
-    .from(".idea-4", 0.7, ideaTextTrans)
-    .to(".idea-4", 0.7, ideaTextTransLeave, "+=1.5")
-    .from(
-      ".idea-5",
-      0.7,
-      {
-        rotationX: 15,
-        rotationZ: -10,
-        skewY: "-5deg",
-        y: 50,
-        z: 10,
-        opacity: 0,
-      },
-      "+=0.5"
-    )
-    .to(
-      ".idea-5 span",
-      0.7,
-      {
-        rotation: 90,
-        x: 8,
-      },
-      "+=0.4"
-    )
-    .to(
-      ".idea-5",
-      0.7,
-      {
-        scale: 0.2,
-        opacity: 0,
-      },
-      "+=2"
-    )
-    .staggerFrom(
-      ".idea-6 span",
-      0.8,
-      {
-        scale: 3,
-        opacity: 0,
-        rotation: 15,
-        ease: Expo.easeOut,
-      },
-      0.2
-    )
-    .staggerTo(
-      ".idea-6 span",
-      0.8,
-      {
-        scale: 3,
-        opacity: 0,
-        rotation: -15,
-        ease: Expo.easeOut,
-      },
-      0.2,
-      "+=1"
-    )
-    .staggerFromTo(
-      ".baloons img",
-      2.5,
-      {
-        opacity: 0.9,
-        y: 1400,
-      },
-      {
-        opacity: 1,
-        y: -1000,
-      },
-      0.2
-    )
-    .from(
-      ".girl-dp",
-      0.5,
-      {
-        scale: 3.5,
-        opacity: 0,
-        x: 25,
-        y: -25,
-        rotationZ: -45,
-      },
-      "-=2"
-    )
-    .from(".hat", 0.5, {
-      x: -100,
-      y: 350,
-      rotation: -180,
-      opacity: 0,
-    })
-    .staggerFrom(
-      ".wish-hbd span",
-      0.7,
-      {
-        opacity: 0,
-        y: -50,
-        // scale: 0.3,
-        rotation: 150,
-        skewX: "30deg",
-        ease: Elastic.easeOut.config(1, 0.5),
-      },
-      0.1
-    )
-    .staggerFromTo(
-      ".wish-hbd span",
-      0.7,
-      {
-        scale: 1.4,
-        rotationY: 150,
-      },
-      {
-        scale: 1,
-        rotationY: 0,
-        color: "#ff69b4",
-        ease: Expo.easeOut,
-      },
-      0.1,
-      "party"
-    )
-    .from(
-      ".wish h5",
-      0.5,
-      {
-        opacity: 0,
-        y: 10,
-        skewX: "-15deg",
-      },
-      "party"
-    )
-    .staggerTo(
-      ".eight svg",
-      1.5,
-      {
-        visibility: "visible",
-        opacity: 0,
-        scale: 80,
-        repeat: 3,
-        repeatDelay: 1.4,
-      },
-      0.3
-    )
-    .to(".six", 0.5, {
-      opacity: 0,
-      y: 30,
-      zIndex: "-1",
-    })
-    .staggerFrom(".nine p", 1, ideaTextTrans, 1.2)
-    .to(
-      ".last-smile",
-      0.5,
-      {
-        rotation: 90,
-      },
-      "+=1"
+
+  .to(scenes[i], fadeTime, {
+    autoAlpha: 0,
+    ease: Power2.easeIn
+  }, `+=${normalTime}`);
+
+}
+
+
+// =====================================================
+// FOTO
+// =====================================================
+
+tl.to(scenes[10], 1.2, {
+  autoAlpha: 1,
+  ease: Power2.easeOut
+})
+
+.to(scenes[10], 0.8, {
+  autoAlpha: 0,
+  ease: Power2.easeIn
+}, "+=5");
+
+
+// =====================================================
+// MENSAGEM "HOJE FAZ 1 ANO"
+// =====================================================
+
+tl.to(scenes[11], 1.2, {
+  autoAlpha: 1,
+  ease: Power2.easeOut
+})
+
+.to(scenes[11], 0.8, {
+  autoAlpha: 0,
+  ease: Power2.easeIn
+}, "+=4");
+
+
+// =====================================================
+// "QUE BOM QUE AQUELE DIA ACONTECEU"
+// =====================================================
+
+tl.to(scenes[12], 1.2, {
+  autoAlpha: 1,
+  ease: Power2.easeOut
+})
+
+.to(scenes[12], 0.8, {
+  autoAlpha: 0,
+  ease: Power2.easeIn
+}, "+=3");
+
+
+// =====================================================
+// "EU TE AMO, MINHA PRINCESA"
+// =====================================================
+
+tl.to(scenes[13], 1.5, {
+  autoAlpha: 1,
+  ease: Power2.easeOut
+})
+
+
+// =====================================================
+// FOGOS
+// =====================================================
+
+// Espera a declaração aparecer
+tl.to({}, 1, {});
+
+tl.call(startFireworks);
+
+
+// =====================================================
+// MANTÉM A CENA DOS FOGOS
+// =====================================================
+
+tl.to(scenes[14], 0.5, {
+  autoAlpha: 1
+});
+
+tl.to({}, 8, {});
+
+
+// =====================================================
+// REINICIAR
+// =====================================================
+
+tl.eventCallback("onComplete", () => {
+
+  stopFireworks();
+
+  tl.restart();
+
+});
+
+
+// =====================================================
+// CANVAS DOS FOGOS
+// =====================================================
+
+const canvas = document.getElementById("fireworks");
+
+const ctx = canvas.getContext("2d");
+
+let fireworks = [];
+
+let fireworksRunning = false;
+
+let animationFrame;
+
+let fireworksInterval;
+
+
+// =====================================================
+// TAMANHO DO CANVAS
+// =====================================================
+
+function resizeCanvas() {
+
+  canvas.width = window.innerWidth;
+
+  canvas.height = window.innerHeight;
+
+}
+
+resizeCanvas();
+
+window.addEventListener("resize", resizeCanvas);
+
+
+// =====================================================
+// CRIAR EXPLOSÃO
+// =====================================================
+
+function createFirework(x, y) {
+
+  const particles = [];
+
+  const particleCount = 70;
+
+  const hue =
+    Math.floor(Math.random() * 360);
+
+
+  for (let i = 0; i < particleCount; i++) {
+
+    const angle =
+      Math.random() * Math.PI * 2;
+
+    const speed =
+      Math.random() * 5 + 2;
+
+
+    particles.push({
+
+      x: x,
+
+      y: y,
+
+      vx: Math.cos(angle) * speed,
+
+      vy: Math.sin(angle) * speed,
+
+      life: 1,
+
+      size:
+        Math.random() * 2 + 1,
+
+      hue: hue
+
+    });
+
+  }
+
+
+  fireworks.push(particles);
+
+}
+
+
+// =====================================================
+// DESENHAR FOGOS
+// =====================================================
+
+function updateFireworks() {
+
+  if (!fireworksRunning) return;
+
+
+  ctx.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+
+  fireworks.forEach((explosion, index) => {
+
+    explosion.forEach(particle => {
+
+      particle.x += particle.vx;
+
+      particle.y += particle.vy;
+
+      particle.vy += 0.035;
+
+      particle.vx *= 0.985;
+
+      particle.vy *= 0.985;
+
+      particle.life -= 0.012;
+
+
+      if (particle.life > 0) {
+
+        ctx.beginPath();
+
+        ctx.arc(
+          particle.x,
+          particle.y,
+          particle.size,
+          0,
+          Math.PI * 2
+        );
+
+
+        ctx.fillStyle =
+          `hsla(
+            ${particle.hue},
+            90%,
+            70%,
+            ${particle.life}
+          )`;
+
+
+        ctx.fill();
+
+      }
+
+    });
+
+
+    fireworks[index] =
+      explosion.filter(
+        particle => particle.life > 0
+      );
+
+
+    if (fireworks[index].length === 0) {
+
+      fireworks.splice(index, 1);
+
+    }
+
+  });
+
+
+  animationFrame =
+    requestAnimationFrame(updateFireworks);
+
+}
+
+
+// =====================================================
+// INICIAR FOGOS
+// =====================================================
+
+function startFireworks() {
+
+  fireworksRunning = true;
+
+
+  fireworksInterval =
+    setInterval(() => {
+
+      const x =
+        Math.random() *
+        (canvas.width * 0.8)
+        +
+        canvas.width * 0.1;
+
+
+      const y =
+        Math.random() *
+        (canvas.height * 0.45)
+        +
+        canvas.height * 0.08;
+
+
+      createFirework(x, y);
+
+    }, 650);
+
+
+  updateFireworks();
+
+}
+
+
+// =====================================================
+// PARAR FOGOS
+// =====================================================
+
+function stopFireworks() {
+
+  fireworksRunning = false;
+
+
+  clearInterval(
+    fireworksInterval
+  );
+
+
+  cancelAnimationFrame(
+    animationFrame
+  );
+
+
+  fireworks = [];
+
+
+  if (ctx) {
+
+    ctx.clearRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
     );
 
-  // tl.seek("currentStep");
-  // tl.timeScale(2);
+  }
 
-  // Restart Animation on click
-  const replyBtn = document.getElementById("replay");
-  replyBtn.addEventListener("click", () => {
-    tl.restart();
-  });
-};
-
-// Import the data to customize and insert them into page
-const fetchData = () => {
-  fetch("customize.json")
-    .then((data) => data.json())
-    .then((data) => {
-      Object.keys(data).map((customData) => {
-        if (data[customData] !== "") {
-          if (customData === "imagePath") {
-            document
-              .getElementById(customData)
-              .setAttribute("src", data[customData]);
-          } else {
-            document.getElementById(customData).innerText = data[customData];
-          }
-        }
-      });
-    });
-};
-
-// Run fetch and animation in sequence
-const resolveFetch = () => {
-  return new Promise((resolve, reject) => {
-    fetchData();
-    resolve("Fetch done!");
-  });
-};
-
-resolveFetch().then(animationTimeline());
+}
