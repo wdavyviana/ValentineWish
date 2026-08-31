@@ -1,224 +1,1084 @@
-const scenes = document.querySelectorAll(".scene");
+// =====================================================
+// CENAS
+// =====================================================
 
-const tl = new TimelineMax();
+const scenes =
+  document.querySelectorAll(".scene");
+
+const continueButtons =
+  document.querySelectorAll(
+    ".continue-btn"
+  );
+
+
+let currentScene = 0;
+
+let transitionLocked = false;
+
+
+// =====================================================
+// ESTADO INICIAL
+// =====================================================
+
+TweenMax.set(
+  scenes,
+  {
+    autoAlpha: 0
+  }
+);
+
+
+showScene(0);
+
+
+// =====================================================
+// MOSTRAR CENA
+// =====================================================
+
+function showScene(index) {
+
+  currentScene = index;
+
+  transitionLocked = false;
+
+
+  TweenMax.set(
+    scenes[index],
+    {
+      autoAlpha: 0
+    }
+  );
+
+
+  TweenMax.to(
+    scenes[index],
+    0.9,
+    {
+
+      autoAlpha: 1,
+
+      ease:
+        Power2.easeOut
+
+    }
+  );
+
+
+  handleScene(index);
+
+}
+
+
+// =====================================================
+// ESCONDER CENA
+// =====================================================
+
+function hideScene(
+  index,
+  callback
+) {
+
+  TweenMax.to(
+    scenes[index],
+    0.7,
+    {
+
+      autoAlpha: 0,
+
+      ease:
+        Power2.easeIn,
+
+      onComplete:
+        callback
+
+    }
+  );
+
+}
+
+
+// =====================================================
+// PRÓXIMA CENA
+// =====================================================
+
+function nextScene() {
+
+  if (
+    transitionLocked
+  ) {
+
+    return;
+
+  }
+
+
+  if (
+    currentScene >=
+    scenes.length - 1
+  ) {
+
+    return;
+
+  }
+
+
+  transitionLocked =
+    true;
+
+
+  const previous =
+    currentScene;
+
+
+  const next =
+    currentScene + 1;
+
+
+  /*
+     PRIMEIRO desaparece a cena atual.
+     SOMENTE depois mostramos a próxima.
+     
+     Isso impede completamente
+     a sobreposição.
+  */
+
+  hideScene(
+    previous,
+    () => {
+
+      showScene(next);
+
+    }
+  );
+
+}
+
+
+// =====================================================
+// COMPORTAMENTO DAS CENAS
+// =====================================================
+
+function handleScene(index) {
+
+
+  // ---------------------------------------------
+  // CENAS COM BOTÃO
+  // ---------------------------------------------
+
+  if (
+    index === 1 ||
+    index === 2
+  ) {
+
+    return;
+
+  }
+
+
+  // ---------------------------------------------
+  // CARROSSEL
+  // ---------------------------------------------
+
+  if (
+    index === 10
+  ) {
+
+    initCarousel();
+
+    return;
+
+  }
+
+
+  // ---------------------------------------------
+  // FINAL
+  // ---------------------------------------------
+
+  if (
+    index === 14
+  ) {
+
+    startFinal();
+
+    return;
+
+  }
+
+
+  // ---------------------------------------------
+  // CENAS AUTOMÁTICAS
+  // ---------------------------------------------
+
+  let duration =
+    2600;
+
+
+  /*
+     Algumas cenas importantes
+     ficam um pouco mais tempo.
+  */
+
+  if (
+    index === 5 ||
+    index === 7 ||
+    index === 8 ||
+    index === 11 ||
+    index === 12 ||
+    index === 13
+  ) {
+
+    duration =
+      3300;
+
+  }
+
+
+  setTimeout(
+    () => {
+
+      if (
+        currentScene === index &&
+        !transitionLocked
+      ) {
+
+        nextScene();
+
+      }
+
+    },
+    duration
+  );
+
+}
+
+
+// =====================================================
+// BOTÕES CONTINUAR
+// =====================================================
+
+continueButtons.forEach(
+  button => {
+
+    button.addEventListener(
+      "click",
+      event => {
+
+        event.stopPropagation();
+
+        nextScene();
+
+      }
+    );
+
+  }
+);
+
+// =====================================================
+// CARROSSEL
+// =====================================================
+
+let carouselIndex = 0;
+let carouselReady = false;
+
+const carousel =
+  document.getElementById("carousel");
+
+const track =
+  document.getElementById("carouselTrack");
+
+const cards =
+  document.querySelectorAll(".carousel-card");
+
+const dotsContainer =
+  document.getElementById("carouselDots");
+
+const carouselContinue =
+  document.getElementById("carouselContinue");
 
 
 // =====================================================
 // CONFIGURAÇÃO
 // =====================================================
 
-const normalTime = 2.5;
-const fadeTime = 0.8;
+const TOTAL_CARDS = cards.length;
+
+let isDragging = false;
+
+let dragStartX = 0;
+
+let currentDragX = 0;
+
+
+// Distância entre cada foto.
+
+function getStep() {
+
+  if (window.innerWidth <= 600) {
+
+    return Math.min(
+      window.innerWidth * 0.68,
+      330
+    );
+
+  }
+
+  return 390;
+}
 
 
 // =====================================================
-// INICIALIZAÇÃO
+// DOTS
 // =====================================================
 
-TweenMax.set(scenes, {
-  autoAlpha: 0
+cards.forEach((_, index) => {
+
+  const dot =
+    document.createElement("span");
+
+  dot.className = "dot";
+
+  dot.addEventListener(
+    "click",
+    (event) => {
+
+      event.stopPropagation();
+
+      carouselIndex = index;
+
+      updateCarousel();
+
+    }
+  );
+
+  dotsContainer.appendChild(dot);
+
 });
 
+const dots =
+  document.querySelectorAll(".dot");
+
 
 // =====================================================
-// CENAS 1 ATÉ 10
+// INICIALIZAR
 // =====================================================
 
-for (let i = 0; i < 10; i++) {
+function initCarousel() {
 
-  tl.to(scenes[i], 1, {
-    autoAlpha: 1,
-    ease: Power2.easeOut
-  })
+  if (!carouselReady) {
 
-  .to(scenes[i], fadeTime, {
-    autoAlpha: 0,
-    ease: Power2.easeIn
-  }, `+=${normalTime}`);
+    carouselReady = true;
+
+    setupCarouselInteraction();
+
+  }
+
+  updateCarousel();
 
 }
 
 
 // =====================================================
-// FOTO
+// POSICIONAR FOTOS
 // =====================================================
 
-tl.to(scenes[10], 1.2, {
-  autoAlpha: 1,
-  ease: Power2.easeOut
-})
+function updateCarousel(
+  dragOffset = 0,
+  instant = false
+) {
 
-.to(scenes[10], 0.8, {
-  autoAlpha: 0,
-  ease: Power2.easeIn
-}, "+=5");
+  if (!cards.length) {
+    return;
+  }
+
+
+  const step =
+    getStep();
+
+
+  cards.forEach(
+    (card, index) => {
+
+      const distance =
+        index - carouselIndex;
+
+
+      /*
+       * Distância horizontal.
+       *
+       * O card central fica em 0.
+       * Os vizinhos ficam para os lados.
+       */
+
+      const x =
+        distance * step +
+        dragOffset;
+
+
+      /*
+       * Calculamos a distância
+       * visual em relação ao centro.
+       */
+
+      const absoluteDistance =
+        Math.abs(distance);
+
+
+      /*
+       * Escala.
+       *
+       * Centro: 1
+       * Vizinho: 0.72
+       * Segundo: 0.55
+       */
+
+      let scale = 1;
+
+      if (
+        absoluteDistance === 1
+      ) {
+
+        scale = 0.72;
+
+      } else if (
+        absoluteDistance === 2
+      ) {
+
+        scale = 0.55;
+
+      } else if (
+        absoluteDistance >= 3
+      ) {
+
+        scale = 0.4;
+
+      }
+
+
+      /*
+       * Opacidade.
+       */
+
+      let opacity = 0;
+
+      if (
+        absoluteDistance === 0
+      ) {
+
+        opacity = 1;
+
+      } else if (
+        absoluteDistance === 1
+      ) {
+
+        opacity = 0.72;
+
+      } else if (
+        absoluteDistance === 2
+      ) {
+
+        opacity = 0.25;
+
+      }
+
+
+      /*
+       * Classes utilizadas pelo CSS.
+       */
+
+      card.classList.remove(
+        "active",
+        "previous",
+        "next",
+        "far-previous",
+        "far-next"
+      );
+
+
+      if (
+        distance === 0
+      ) {
+
+        card.classList.add(
+          "active"
+        );
+
+      } else if (
+        distance === -1
+      ) {
+
+        card.classList.add(
+          "previous"
+        );
+
+      } else if (
+        distance === 1
+      ) {
+
+        card.classList.add(
+          "next"
+        );
+
+      } else if (
+        distance < -1
+      ) {
+
+        card.classList.add(
+          "far-previous"
+        );
+
+      } else {
+
+        card.classList.add(
+          "far-next"
+        );
+
+      }
+
+
+      /*
+       * A foto é posicionada
+       * diretamente em relação
+       * ao centro do carrossel.
+       */
+
+      card.style.transform =
+        `
+          translate(
+            calc(-50% + ${x}px),
+            -50%
+          )
+          scale(${scale})
+        `;
+
+      card.style.opacity =
+        opacity;
+
+
+      /*
+       * Durante o arraste,
+       * removemos a transição.
+       */
+
+      card.style.transition =
+        instant || isDragging
+          ? "none"
+          : "";
+    }
+  );
+
+
+  /*
+   * Atualiza os indicadores.
+   */
+
+  dots.forEach(
+    (dot, index) => {
+
+      dot.classList.toggle(
+        "active",
+        index === carouselIndex
+      );
+
+    }
+  );
+
+}
 
 
 // =====================================================
-// MENSAGEM "HOJE FAZ 1 ANO"
+// SWIPE / DRAG
 // =====================================================
 
-tl.to(scenes[11], 1.2, {
-  autoAlpha: 1,
-  ease: Power2.easeOut
-})
+function setupCarouselInteraction() {
 
-.to(scenes[11], 0.8, {
-  autoAlpha: 0,
-  ease: Power2.easeIn
-}, "+=4");
+  /*
+   * TOUCH
+   */
+
+  carousel.addEventListener(
+    "touchstart",
+    (event) => {
+
+      isDragging = true;
+
+      dragStartX =
+        event.touches[0].clientX;
+
+      currentDragX =
+        dragStartX;
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  carousel.addEventListener(
+    "touchmove",
+    (event) => {
+
+      if (!isDragging) {
+        return;
+      }
+
+      currentDragX =
+        event.touches[0].clientX;
+
+      const dragDistance =
+        currentDragX -
+        dragStartX;
+
+
+      updateCarousel(
+        dragDistance
+      );
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  carousel.addEventListener(
+    "touchend",
+    () => {
+
+      if (!isDragging) {
+        return;
+      }
+
+      finishDrag();
+
+    }
+  );
+
+
+  /*
+   * MOUSE
+   */
+
+  carousel.addEventListener(
+    "mousedown",
+    (event) => {
+
+      event.preventDefault();
+
+      isDragging = true;
+
+      dragStartX =
+        event.clientX;
+
+      currentDragX =
+        dragStartX;
+
+      carousel.classList.add(
+        "is-dragging"
+      );
+
+    }
+  );
+
+
+  window.addEventListener(
+    "mousemove",
+    (event) => {
+
+      if (!isDragging) {
+        return;
+      }
+
+      currentDragX =
+        event.clientX;
+
+      const dragDistance =
+        currentDragX -
+        dragStartX;
+
+
+      updateCarousel(
+        dragDistance
+      );
+
+    }
+  );
+
+
+  window.addEventListener(
+    "mouseup",
+    () => {
+
+      if (!isDragging) {
+        return;
+      }
+
+      finishDrag();
+
+    }
+  );
+
+}
 
 
 // =====================================================
-// "QUE BOM QUE AQUELE DIA ACONTECEU"
+// FINALIZAR DRAG
 // =====================================================
 
-tl.to(scenes[12], 1.2, {
-  autoAlpha: 1,
-  ease: Power2.easeOut
-})
+function finishDrag() {
 
-.to(scenes[12], 0.8, {
-  autoAlpha: 0,
-  ease: Power2.easeIn
-}, "+=3");
+  const distance =
+    currentDragX -
+    dragStartX;
+
+
+  isDragging = false;
+
+  carousel.classList.remove(
+    "is-dragging"
+  );
+
+
+  /*
+   * Só muda de foto se
+   * o movimento for relevante.
+   */
+
+  const threshold = 60;
+
+
+  if (
+    Math.abs(distance) >= threshold
+  ) {
+
+    if (distance < 0) {
+
+      nextPhoto();
+
+    } else {
+
+      previousPhoto();
+
+    }
+
+  } else {
+
+    /*
+     * Se ela apenas arrastou um pouco,
+     * voltamos suavemente para o centro.
+     */
+
+    updateCarousel();
+
+  }
+
+}
 
 
 // =====================================================
-// "EU TE AMO, MINHA PRINCESA"
+// PRÓXIMA FOTO
 // =====================================================
 
-tl.to(scenes[13], 1.5, {
-  autoAlpha: 1,
-  ease: Power2.easeOut
-})
+function nextPhoto() {
 
+  if (
+    carouselIndex <
+    TOTAL_CARDS - 1
+  ) {
+
+    carouselIndex++;
+
+    updateCarousel();
+
+  }
+
+}
+
+
+// =====================================================
+// FOTO ANTERIOR
+// =====================================================
+
+function previousPhoto() {
+
+  if (
+    carouselIndex > 0
+  ) {
+
+    carouselIndex--;
+
+    updateCarousel();
+
+  }
+
+}
+
+
+// =====================================================
+// BOTÃO CONTINUAR
+// =====================================================
+
+carouselContinue.addEventListener(
+  "click",
+  (event) => {
+
+    event.stopPropagation();
+
+    nextScene();
+
+  }
+);
+
+
+// =====================================================
+// RECALCULAR AO REDIMENSIONAR
+// =====================================================
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    if (
+      currentScene === 10
+    ) {
+
+      updateCarousel();
+
+    }
+
+  }
+);
 
 // =====================================================
 // FOGOS
 // =====================================================
 
-// Espera a declaração aparecer
-tl.to({}, 1, {});
-
-tl.call(startFireworks);
-
-
-// =====================================================
-// MANTÉM A CENA DOS FOGOS
-// =====================================================
-
-tl.to(scenes[14], 0.5, {
-  autoAlpha: 1
-});
-
-tl.to({}, 8, {});
+const canvas =
+  document.getElementById(
+    "fireworks"
+  );
 
 
-// =====================================================
-// REINICIAR
-// =====================================================
+const ctx =
+  canvas.getContext(
+    "2d"
+  );
 
-tl.eventCallback("onComplete", () => {
-
-  stopFireworks();
-
-  tl.restart();
-
-});
-
-
-// =====================================================
-// CANVAS DOS FOGOS
-// =====================================================
-
-const canvas = document.getElementById("fireworks");
-
-const ctx = canvas.getContext("2d");
 
 let fireworks = [];
 
-let fireworksRunning = false;
+let fireworksRunning =
+  false;
 
-let animationFrame;
+let fireworksStarted =
+  false;
 
 let fireworksInterval;
 
+let animationFrame;
+
 
 // =====================================================
-// TAMANHO DO CANVAS
+// CANVAS
 // =====================================================
 
 function resizeCanvas() {
 
-  canvas.width = window.innerWidth;
+  canvas.width =
+    window.innerWidth;
 
-  canvas.height = window.innerHeight;
+  canvas.height =
+    window.innerHeight;
 
 }
 
+
 resizeCanvas();
 
-window.addEventListener("resize", resizeCanvas);
+
+window.addEventListener(
+  "resize",
+  resizeCanvas
+);
 
 
 // =====================================================
-// CRIAR EXPLOSÃO
+// CRIAR FOGO
 // =====================================================
 
-function createFirework(x, y) {
+function createFirework(
+  x,
+  y
+) {
 
-  const particles = [];
+  const explosion = [];
 
-  const particleCount = 70;
+  const count = 80;
 
   const hue =
-    Math.floor(Math.random() * 360);
+    Math.floor(
+      Math.random() * 360
+    );
 
 
-  for (let i = 0; i < particleCount; i++) {
+  for (
+    let i = 0;
+    i < count;
+    i++
+  ) {
 
     const angle =
-      Math.random() * Math.PI * 2;
+      (
+        Math.PI * 2 * i
+      ) /
+      count;
+
 
     const speed =
-      Math.random() * 5 + 2;
+      2 +
+      Math.random() * 5;
 
 
-    particles.push({
+    explosion.push({
 
       x: x,
 
       y: y,
 
-      vx: Math.cos(angle) * speed,
+      vx:
+        Math.cos(angle) *
+        speed,
 
-      vy: Math.sin(angle) * speed,
+      vy:
+        Math.sin(angle) *
+        speed,
 
       life: 1,
 
       size:
-        Math.random() * 2 + 1,
+        1 +
+        Math.random() * 2,
 
-      hue: hue
+      hue:
+
+        hue,
+
+      heart:
+
+        Math.random() <
+        0.14
 
     });
 
   }
 
 
-  fireworks.push(particles);
+  fireworks.push(
+    explosion
+  );
 
 }
 
 
 // =====================================================
-// DESENHAR FOGOS
+// DESENHAR CORAÇÃO
 // =====================================================
 
-function updateFireworks() {
+function drawHeart(
+  x,
+  y,
+  size,
+  hue,
+  opacity
+) {
 
-  if (!fireworksRunning) return;
+  ctx.save();
+
+
+  ctx.translate(
+    x,
+    y
+  );
+
+
+  ctx.scale(
+    size / 8,
+    size / 8
+  );
+
+
+  ctx.beginPath();
+
+
+  ctx.moveTo(
+    0,
+    6
+  );
+
+
+  ctx.bezierCurveTo(
+    -10,
+    -2,
+    -8,
+    -10,
+    0,
+    -5
+  );
+
+
+  ctx.bezierCurveTo(
+    8,
+    -10,
+    10,
+    -2,
+    0,
+    6
+  );
+
+
+  ctx.fillStyle =
+    `hsla(
+      ${hue},
+      90%,
+      70%,
+      ${opacity}
+    )`;
+
+
+  ctx.shadowBlur =
+    10;
+
+
+  ctx.shadowColor =
+    `hsla(
+      ${hue},
+      90%,
+      70%,
+      ${opacity}
+    )`;
+
+
+  ctx.fill();
+
+
+  ctx.restore();
+
+}
+
+
+// =====================================================
+// ANIMAR FOGOS
+// =====================================================
+
+function animateFireworks() {
+
+  if (
+    !fireworksRunning
+  ) {
+
+    return;
+
+  }
 
 
   ctx.clearRect(
@@ -229,69 +1089,116 @@ function updateFireworks() {
   );
 
 
-  fireworks.forEach((explosion, index) => {
-
-    explosion.forEach(particle => {
-
-      particle.x += particle.vx;
-
-      particle.y += particle.vy;
-
-      particle.vy += 0.035;
-
-      particle.vx *= 0.985;
-
-      particle.vy *= 0.985;
-
-      particle.life -= 0.012;
+  fireworks.forEach(
+    (explosion, index) => {
 
 
-      if (particle.life > 0) {
+      explosion.forEach(
+        particle => {
 
-        ctx.beginPath();
-
-        ctx.arc(
-          particle.x,
-          particle.y,
-          particle.size,
-          0,
-          Math.PI * 2
-        );
+          particle.x +=
+            particle.vx;
 
 
-        ctx.fillStyle =
-          `hsla(
-            ${particle.hue},
-            90%,
-            70%,
-            ${particle.life}
-          )`;
+          particle.y +=
+            particle.vy;
 
 
-        ctx.fill();
-
-      }
-
-    });
+          particle.vy +=
+            0.035;
 
 
-    fireworks[index] =
-      explosion.filter(
-        particle => particle.life > 0
+          particle.vx *=
+            0.985;
+
+
+          particle.vy *=
+            0.985;
+
+
+          particle.life -=
+            0.012;
+
+
+          if (
+            particle.life <= 0
+          ) {
+
+            return;
+
+          }
+
+
+          if (
+            particle.heart
+          ) {
+
+            drawHeart(
+              particle.x,
+              particle.y,
+              particle.size * 4,
+              particle.hue,
+              particle.life
+            );
+
+          } else {
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+              particle.x,
+              particle.y,
+              particle.size,
+              0,
+              Math.PI * 2
+            );
+
+
+            ctx.fillStyle =
+              `hsla(
+                ${particle.hue},
+                90%,
+                70%,
+                ${particle.life}
+              )`;
+
+
+            ctx.fill();
+
+          }
+
+        }
       );
 
 
-    if (fireworks[index].length === 0) {
+      fireworks[index] =
+        explosion.filter(
+          particle =>
+            particle.life > 0
+        );
 
-      fireworks.splice(index, 1);
+
+      if (
+        fireworks[index]
+          .length === 0
+      ) {
+
+        fireworks.splice(
+          index,
+          1
+        );
+
+      }
 
     }
-
-  });
+  );
 
 
   animationFrame =
-    requestAnimationFrame(updateFireworks);
+    requestAnimationFrame(
+      animateFireworks
+    );
 
 }
 
@@ -302,32 +1209,110 @@ function updateFireworks() {
 
 function startFireworks() {
 
-  fireworksRunning = true;
+  if (
+    fireworksStarted
+  ) {
+
+    return;
+
+  }
+
+
+  fireworksStarted =
+    true;
+
+  fireworksRunning =
+    true;
 
 
   fireworksInterval =
-    setInterval(() => {
+    setInterval(
+      () => {
 
-      const x =
-        Math.random() *
-        (canvas.width * 0.8)
-        +
-        canvas.width * 0.1;
-
-
-      const y =
-        Math.random() *
-        (canvas.height * 0.45)
-        +
-        canvas.height * 0.08;
+        const x =
+          canvas.width *
+          (
+            0.12 +
+            Math.random() *
+            0.76
+          );
 
 
-      createFirework(x, y);
+        const y =
+          canvas.height *
+          (
+            0.08 +
+            Math.random() *
+            0.42
+          );
 
-    }, 650);
+
+        createFirework(
+          x,
+          y
+        );
+
+      },
+      550
+    );
 
 
-  updateFireworks();
+  animateFireworks();
+
+}
+
+
+// =====================================================
+// FINAL
+// =====================================================
+
+function startFinal() {
+
+  startFireworks();
+
+
+  const heart =
+    document.getElementById(
+      "mainHeart"
+    );
+
+
+  TweenMax.to(
+    heart,
+    1.2,
+    {
+
+      opacity: 1,
+
+      scale: 1,
+
+      ease:
+        Power2.easeOut
+
+    }
+  );
+
+
+  const replay =
+    document.getElementById(
+      "replay"
+    );
+
+
+  TweenMax.to(
+    replay,
+    1,
+    {
+
+      opacity: 1,
+
+      delay: 4,
+
+      ease:
+        Power2.easeOut
+
+    }
+  );
 
 }
 
@@ -338,7 +1323,8 @@ function startFireworks() {
 
 function stopFireworks() {
 
-  fireworksRunning = false;
+  fireworksRunning =
+    false;
 
 
   clearInterval(
@@ -354,15 +1340,104 @@ function stopFireworks() {
   fireworks = [];
 
 
-  if (ctx) {
-
-    ctx.clearRect(
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
-
-  }
+  ctx.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
 
 }
+
+
+// =====================================================
+// REPETIR
+// =====================================================
+
+document
+  .getElementById(
+    "replay"
+  )
+  .addEventListener(
+    "click",
+    event => {
+
+      event.stopPropagation();
+
+
+      stopFireworks();
+
+
+      fireworksStarted =
+        false;
+
+
+      carouselIndex =
+        0;
+
+
+      updateCarousel();
+
+
+      TweenMax.set(
+        scenes,
+        {
+          autoAlpha: 0
+        }
+      );
+
+
+      TweenMax.set(
+        document.getElementById(
+          "mainHeart"
+        ),
+        {
+          opacity: 0,
+          scale: 0.3
+        }
+      );
+
+
+      TweenMax.set(
+        document.getElementById(
+          "replay"
+        ),
+        {
+          opacity: 0
+        }
+      );
+
+
+      currentScene =
+        0;
+
+
+      transitionLocked =
+        false;
+
+
+      showScene(0);
+
+    }
+  );
+
+
+// =====================================================
+// RECALCULAR CARROSSEL
+// AO REDIMENSIONAR A JANELA
+// =====================================================
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    if (
+      currentScene === 10
+    ) {
+
+      updateCarousel();
+
+    }
+
+  }
+);

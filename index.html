@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -16,113 +17,400 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="style/style.css">
+  <link
+    rel="stylesheet"
+    href="style/style.css"
+  >
+
 </head>
+
 
 <body>
 
   <main class="story">
 
-    <!-- CENA 1 -->
+
+    <!-- ==============================
+         CENA 01
+    =============================== -->
+
     <section class="scene">
-      <h1>Ei, Natália...</h1>
+
+      <h1>
+        Ei, Natália...
+      </h1>
+
     </section>
 
 
-    <!-- CENA 2 -->
-    <section class="scene">
-      <p>Eu queria te mostrar uma coisa.</p>
+    <!-- ==============================
+         CENA 02
+    =============================== -->
+
+    <section class="scene interactive-scene">
+
+      <div>
+
+        <p>
+          Eu queria te mostrar uma coisa.
+        </p>
+
+        <button class="continue-btn">
+          continuar →
+        </button>
+
+      </div>
+
     </section>
 
 
-    <!-- CENA 3 -->
-    <section class="scene">
-      <p>Mas você vai ter que continuar...</p>
+    <!-- ==============================
+         CENA 03
+    =============================== -->
+
+    <section class="scene interactive-scene">
+
+      <div>
+
+        <p>
+          Mas você vai ter que continuar...
+        </p>
+
+        <button class="continue-btn">
+          continuar
+        </button>
+
+      </div>
+
     </section>
 
 
-    <!-- CENA 4 -->
+    <!-- ==============================
+         CENA 04
+    =============================== -->
+
     <section class="scene">
-      <p>Algumas datas passam despercebidas.</p>
-    </section>
 
-
-    <!-- CENA 5 -->
-    <section class="scene">
-      <p>Outras ficam.</p>
-    </section>
-
-
-    <!-- CENA 6 -->
-    <section class="scene date">
-      <p>04 de setembro de 2025.</p>
-    </section>
-
-
-    <!-- CENA 7 -->
-    <section class="scene">
-      <p>Nosso primeiro encontro.</p>
-    </section>
-
-
-    <!-- CENA 8 -->
-    <section class="scene">
-      <p>Nosso primeiro beijo.</p>
-    </section>
-
-
-    <!-- CENA 9 -->
-    <section class="scene">
-      <p>Naquele dia, eu não fazia ideia...</p>
-    </section>
-
-
-    <!-- CENA 10 -->
-    <section class="scene">
       <p>
-        de que um ano depois<br>
-        eu estaria aqui fazendo isso para você.
+        Algumas datas passam despercebidas.
       </p>
-    </section>
-
-
-    <!-- CENA 11 — FOTO -->
-    <section class="scene photo-scene">
-
-      <img
-        src="img/natalia.jpeg"
-        alt="Nós dois"
-      >
 
     </section>
 
 
-    <!-- CENA 12 -->
+    <!-- ==============================
+         CENA 05
+    =============================== -->
+
+    <section class="scene">
+
+      <p>
+        Outras ficam.
+      </p>
+
+    </section>
+
+
+    <!-- ==============================
+         CENA 06
+    =============================== -->
+
+    <section class="scene date-scene">
+
+      <p>
+        04 de setembro de 2025.
+      </p>
+
+    </section>
+
+
+    <!-- ==============================
+         CENA 07
+    =============================== -->
+
+    <section class="scene">
+
+      <p>
+        Nosso primeiro encontro.
+      </p>
+
+    </section>
+
+
+    <!-- ==============================
+         CENA 08
+    =============================== -->
+
+    <section class="scene">
+
+      <p>
+        Nosso primeiro beijo.
+      </p>
+
+    </section>
+
+
+    <!-- ==============================
+         CENA 09
+    =============================== -->
+
+    <section class="scene">
+
+      <p>
+        Naquele dia, eu não fazia ideia...
+      </p>
+
+    </section>
+
+
+    <!-- ==============================
+         CENA 10
+    =============================== -->
+
+    <section class="scene">
+
+      <p>
+
+        de que um ano depois
+        <br>
+
+        eu estaria aqui fazendo isso para você.
+
+      </p>
+
+    </section>
+
+
+    <!-- ==============================
+         CENA 11 — CARROSSEL
+    =============================== -->
+
+    <section class="scene carousel-scene">
+
+      <div class="carousel-container">
+
+        <p class="carousel-title">
+          Alguns momentos que eu guardei.
+        </p>
+
+
+        <div
+          class="carousel"
+          id="carousel"
+        >
+
+          <div
+            class="carousel-track"
+            id="carouselTrack"
+          >
+
+
+            <!-- NATÁLIA -->
+
+            <div
+              class="carousel-card"
+              data-index="0"
+            >
+
+              <img
+                src="img/natalia.jpeg"
+                alt="Natália"
+                draggable="false"
+              >
+
+            </div>
+
+
+            <!-- FOTO 01 -->
+
+            <div
+              class="carousel-card"
+              data-index="1"
+            >
+
+              <img
+                src="img/foto-01.jpeg"
+                alt="Momento nosso"
+                draggable="false"
+              >
+
+            </div>
+
+
+            <!-- FOTO 02 -->
+
+            <div
+              class="carousel-card"
+              data-index="2"
+            >
+
+              <img
+                src="img/foto-02.jpeg"
+                alt="Momento nosso"
+                draggable="false"
+              >
+
+            </div>
+
+
+            <!-- FOTO 03 -->
+
+            <div
+              class="carousel-card"
+              data-index="3"
+            >
+
+              <img
+                src="img/foto-03.jpeg"
+                alt="Momento nosso"
+                draggable="false"
+              >
+
+            </div>
+
+
+            <!-- FOTO 04 -->
+
+            <div
+              class="carousel-card"
+              data-index="4"
+            >
+
+              <img
+                src="img/foto-04.jpeg"
+                alt="Momento nosso"
+                draggable="false"
+              >
+
+            </div>
+
+
+            <!-- FOTO 05 -->
+
+            <div
+              class="carousel-card"
+              data-index="5"
+            >
+
+              <img
+                src="img/foto-05.jpeg"
+                alt="Momento nosso"
+                draggable="false"
+              >
+
+            </div>
+
+
+            <!-- FOTO 06 -->
+
+            <div
+              class="carousel-card"
+              data-index="6"
+            >
+
+              <img
+                src="img/foto-06.jpeg"
+                alt="Momento nosso"
+                draggable="false"
+              >
+
+            </div>
+
+
+            <!-- FOTO 07 -->
+
+            <div
+              class="carousel-card"
+              data-index="7"
+            >
+
+              <img
+                src="img/foto-07.jpeg"
+                alt="Momento nosso"
+                draggable="false"
+              >
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="carousel-dots"
+          id="carouselDots"
+        ></div>
+
+
+        <p class="carousel-hint">
+          deslize para ver →
+        </p>
+
+
+        <button
+          class="continue-btn carousel-continue"
+          id="carouselContinue"
+        >
+          continuar
+        </button>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- ==============================
+         CENA 12
+    =============================== -->
+
     <section class="scene final-message">
 
-      <h2>Hoje faz 1 ano.</h2>
+      <div>
 
-      <p>
-        1 ano daquele encontro.<br>
-        1 ano daquele beijo.<br>
-        1 ano de nós.
-      </p>
+        <h2>
+          Hoje faz 1 ano.
+        </h2>
+
+        <p>
+
+          Um ano desde aquele encontro.
+          <br>
+
+          Um ano desde aquele beijo.
+          <br>
+
+          Um ano desde o começo de uma história
+          <br>
+
+          que eu não sabia que queria tanto viver.
+
+        </p>
+
+      </div>
 
     </section>
 
 
-    <!-- CENA 13 -->
+    <!-- ==============================
+         CENA 13
+    =============================== -->
+
     <section class="scene ending">
 
       <p>
-        Que bom que aquele dia aconteceu.
+        E eu fico muito feliz que tenha sido com você.
       </p>
-
-      <span>❤️</span>
 
     </section>
 
-    <!-- CENA 14 — DECLARAÇÃO -->
+
+    <!-- ==============================
+         CENA 14
+    =============================== -->
+
     <section class="scene declaration">
 
       <p>
@@ -132,16 +420,40 @@
     </section>
 
 
-    <!-- CENA 15 — FOGOS -->
-    <section class="scene fireworks-scene">
+    <!-- ==============================
+         CENA 15 — FINAL
+    =============================== -->
+
+    <section
+      class="scene fireworks-scene"
+      id="fireworksScene"
+    >
 
       <canvas id="fireworks"></canvas>
 
-      <div class="fireworks-message">
-        <p>❤️</p>
+
+      <div class="heart-container">
+
+        <div
+          class="main-heart"
+          id="mainHeart"
+        >
+          ♥
+        </div>
+
       </div>
 
+
+      <button
+        class="replay-btn"
+        id="replay"
+      >
+        quero ver de novo
+      </button>
+
+
     </section>
+
 
   </main>
 
@@ -149,6 +461,7 @@
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js">
   </script>
+
 
   <script src="script/main.js"></script>
 
