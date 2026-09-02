@@ -3,6 +3,30 @@
 }
 
 
+:root {
+
+  /* fundo quente e profundo, como a cena dos fogos */
+  --bg-1: #17130f;
+  --bg-2: #0a0705;
+  --bg-3: #050403;
+
+  --text: #f3ece2;
+  --text-muted: rgba(243, 236, 226, 0.55);
+
+  /* rosa/vinho, mais carta de amor que alerta vermelho */
+  --accent: #d1476b;
+  --accent-soft: #e0577c;
+  --accent-deep: #a83458;
+
+  /* dourado usado com moderação (dots ativos, pequenos toques) */
+  --gold: #d9a659;
+
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "DM Sans", sans-serif;
+
+}
+
+
 html,
 body {
 
@@ -17,13 +41,18 @@ body {
 
 body {
 
-  background: #111;
+  background:
+    radial-gradient(
+      ellipse at center,
+      var(--bg-1) 0%,
+      var(--bg-2) 65%,
+      var(--bg-3) 100%
+    );
 
-  color: #f5f5f5;
+  color: var(--text);
 
   font-family:
-    "DM Sans",
-    sans-serif;
+    var(--font-sans);
 
   overflow: hidden;
 
@@ -36,6 +65,8 @@ body {
 
   width: 100%;
   height: 100vh;
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
 
 }
 
@@ -52,6 +83,8 @@ body {
 
   width: 100%;
   height: 100vh;
+  height: 100dvh;
+  height: calc(var(--vh, 1vh) * 100);
 
   display: flex;
 
@@ -77,8 +110,6 @@ body {
 
   font-weight: 400;
 
-  letter-spacing: -0.03em;
-
   line-height: 1.4;
 
 }
@@ -95,19 +126,55 @@ body {
 
   max-width: 850px;
 
+  letter-spacing: -0.03em;
+
 }
 
 
 .scene h1 {
 
+  font-family: var(--font-serif);
+
+  font-style: italic;
+
   font-size:
     clamp(
-      2.5rem,
-      8vw,
-      5rem
+      3rem,
+      9vw,
+      6rem
     );
 
   font-weight: 500;
+
+  letter-spacing: 0;
+
+}
+
+
+/* =========================================
+   CENAS INTERATIVAS (texto + botão continuar)
+========================================= */
+
+.interactive-scene div {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 40px;
+
+}
+
+
+@media (max-width: 600px) {
+
+  .interactive-scene div {
+
+    gap: 56px;
+
+  }
 
 }
 
@@ -118,7 +185,12 @@ body {
 .continue-btn,
 .replay-btn {
   border: none;
-  background: #e53935;
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-soft),
+      var(--accent-deep)
+    );
   color: #fff;
   font-family: inherit;
   font-size: 0.95rem;
@@ -134,22 +206,22 @@ body {
   cursor: pointer;
 
   box-shadow:
-    0 8px 24px rgba(229, 57, 53, 0.20);
+    0 8px 24px rgba(209, 71, 107, 0.25);
 
   transition:
     transform 0.25s ease,
-    background 0.25s ease,
-    box-shadow 0.25s ease;
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
 }
 
 .continue-btn:hover,
 .replay-btn:hover {
-  background: #ef4444;
+  filter: brightness(1.08);
 
   transform: translateY(-2px);
 
   box-shadow:
-    0 12px 28px rgba(229, 57, 53, 0.30);
+    0 12px 30px rgba(209, 71, 107, 0.35);
 }
 
 .continue-btn:active,
@@ -217,14 +289,42 @@ body {
 
 .date-scene p {
 
+  font-family: var(--font-serif);
+
   font-size:
     clamp(
-      2.3rem,
+      2.4rem,
       8vw,
       5rem
     );
 
   font-weight: 500;
+
+  letter-spacing: 0.04em;
+
+  position: relative;
+
+  padding-bottom: 22px;
+
+}
+
+.date-scene p::after {
+
+  content: "";
+
+  position: absolute;
+
+  bottom: 0;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 56px;
+  height: 1px;
+
+  background: var(--gold);
+
+  opacity: 0.6;
 
 }
 
@@ -256,12 +356,31 @@ body {
   left: 0;
   right: 0;
 
-  margin: 0 !important;
+  /* left:0 + right:0 + max-width (herdado de ".scene p") só
+     centralizam de verdade se a margem puder virar "auto".
+     Antes estava fixa em 0, então o título ficava grudado
+     na borda esquerda em vez de centralizado. */
+  margin: 0 auto !important;
 
   font-size: 1.25rem !important;
   font-weight: 300 !important;
 
   text-align: center;
+
+  /* Um toque mais elegante para a homenagem: mais respiro
+     entre as letras e um brilho suave na cor do coração. */
+  letter-spacing: 0.04em;
+  color: rgba(243, 236, 226, 0.92);
+  text-shadow: 0 0 18px rgba(209, 71, 107, 0.35);
+}
+
+.carousel-title::after {
+  content: "♥";
+  display: block;
+  margin-top: 6px;
+  font-size: 0.7rem;
+  color: var(--accent);
+  opacity: 0.75;
 }
 
 /* ÁREA DO CARROSSEL */
@@ -374,6 +493,10 @@ body {
     brightness(1);
 
   z-index: 10;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(209, 71, 107, 0.18);
 }
 
 /* =========================================
@@ -450,10 +573,13 @@ body {
 }
 
 .dot.active {
-  background: white;
+  background: var(--gold);
 
   transform:
     scale(1.6);
+
+  box-shadow:
+    0 0 10px rgba(217, 166, 89, 0.7);
 }
 
 /* =========================================
@@ -469,6 +595,20 @@ body {
 
   margin:
     10px 0 0 !important;
+}
+
+.hint-arrow {
+  display: inline-block;
+  animation: hintNudge 1.6s ease-in-out infinite;
+}
+
+@keyframes hintNudge {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
 }
 
 /* =========================================
@@ -550,11 +690,15 @@ body {
 
 .final-message h2 {
 
+  font-family: var(--font-serif);
+
+  font-style: italic;
+
   font-size:
     clamp(
-      2.2rem,
-      7vw,
-      4rem
+      2.6rem,
+      8vw,
+      4.5rem
     );
 
   font-weight: 500;
@@ -607,12 +751,25 @@ body {
 
 .declaration p {
 
+  font-family: var(--font-serif);
+
+  font-style: italic;
+
   font-size:
     clamp(
-      2rem,
-      7vw,
-      4rem
+      2.4rem,
+      8vw,
+      5.5rem
     );
+
+  font-weight: 500;
+
+  letter-spacing: 0;
+
+  color: var(--text);
+
+  text-shadow:
+    0 0 30px rgba(209, 71, 107, 0.35);
 
 }
 
@@ -669,7 +826,7 @@ body {
 .main-heart {
 
   color:
-    #ff6b81;
+    var(--accent-soft);
 
   font-size:
     clamp(
@@ -683,17 +840,17 @@ body {
   text-shadow:
     0 0 20px
     rgba(
-      255,
+      209,
+      71,
       107,
-      129,
       0.7
     );
 
-  animation:
-    heartPulse
-    1.2s
-    ease-in-out
-    infinite;
+  /* A animação heartPulse só é ATRIBUÍDA via JS (main.js),
+     depois que o GSAP termina de "crescer" o coração.
+     Mesmo pausada, uma animação CSS já anexada continua
+     vencendo o transform aplicado via JS — por isso ela
+     não pode nem estar presente até a hora certa. */
 
 }
 
@@ -777,6 +934,13 @@ body {
 
   color: white;
 
+  background: transparent;
+
+  transform:
+    translateX(-50%);
+
+  box-shadow: none;
+
 }
 
 
@@ -804,34 +968,6 @@ body {
 
 
   /* CARROSSEL */
-
-  .carousel {
-
-    height:
-      60vw;
-
-    max-height:
-      330px;
-
-  }
-
-
-  .carousel-card {
-
-    flex:
-      0 0 76vw;
-
-    height:
-      48vw;
-
-    max-height:
-      220px;
-
-    margin:
-      0 -45px;
-
-  }
-
 
   .carousel-title {
 

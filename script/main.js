@@ -1,4 +1,34 @@
 // =====================================================
+// ALTURA REAL DA TELA (celular)
+// =====================================================
+
+/*
+   Em navegadores mobile, 100vh é calculado como se a barra
+   de endereço estivesse escondida — então com ela visível a
+   tela real é menor, e qualquer coisa presa no "bottom"
+   (como o botão de repetir) acaba ficando fora da área
+   visível. Isso resolve isso em qualquer navegador, mesmo
+   os que não suportam a unidade mais nova 100dvh.
+*/
+
+function setRealVh() {
+
+  document.documentElement.style.setProperty(
+    "--vh",
+    `${window.innerHeight * 0.01}px`
+  );
+
+}
+
+setRealVh();
+
+window.addEventListener(
+  "resize",
+  setRealVh
+);
+
+
+// =====================================================
 // CENAS
 // =====================================================
 
@@ -915,9 +945,25 @@ function createFirework(
 
   const count = 80;
 
+  /* Paleta quente (rosa/vinho + dourado), coerente com o
+     resto da homenagem — em vez de um arco-íris aleatório. */
+
+  const warmBands = [
+    [325, 355],
+    [28, 48]
+  ];
+
+  const band =
+    warmBands[
+      Math.floor(
+        Math.random() * warmBands.length
+      )
+    ];
+
   const hue =
     Math.floor(
-      Math.random() * 360
+      band[0] +
+      Math.random() * (band[1] - band[0])
     );
 
 
@@ -1287,7 +1333,15 @@ function startFinal() {
       scale: 1,
 
       ease:
-        Power2.easeOut
+        Power2.easeOut,
+
+      onComplete:
+        () => {
+
+          heart.style.animation =
+            "heartPulse 1.2s ease-in-out infinite";
+
+        }
 
     }
   );
@@ -1387,10 +1441,16 @@ document
       );
 
 
-      TweenMax.set(
+      const heartEl =
         document.getElementById(
           "mainHeart"
-        ),
+        );
+
+      heartEl.style.animation =
+        "none";
+
+      TweenMax.set(
+        heartEl,
         {
           opacity: 0,
           scale: 0.3
