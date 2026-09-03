@@ -206,6 +206,21 @@ function handleScene(index) {
 
 
   // ---------------------------------------------
+  // CARTA / DATA
+  // ---------------------------------------------
+
+  if (
+    index === 5
+  ) {
+
+    initEnvelope();
+
+    return;
+
+  }
+
+
+  // ---------------------------------------------
   // CARROSSEL
   // ---------------------------------------------
 
@@ -214,6 +229,21 @@ function handleScene(index) {
   ) {
 
     initCarousel();
+
+    return;
+
+  }
+
+
+  // ---------------------------------------------
+  // SEGURAR PARA REVELAR
+  // ---------------------------------------------
+
+  if (
+    index === 13
+  ) {
+
+    initHoldHeart();
 
     return;
 
@@ -249,12 +279,10 @@ function handleScene(index) {
   */
 
   if (
-    index === 5 ||
     index === 7 ||
     index === 8 ||
     index === 11 ||
-    index === 12 ||
-    index === 13
+    index === 12
   ) {
 
     duration =
@@ -302,6 +330,362 @@ continueButtons.forEach(
 
   }
 );
+
+
+// =====================================================
+// BOTÃO "NÃO QUERO" (fujão)
+// =====================================================
+
+const dodgeMessages = [
+  "essa não escapa não 😏",
+  "tenta de novo",
+  "quase!",
+  "hoje não tem como",
+  "só clicando em continuar mesmo"
+];
+
+const dodgeBtn =
+  document.getElementById("dodgeBtn");
+
+if (dodgeBtn) {
+
+  const dodgeScene =
+    dodgeBtn.closest(".scene");
+
+  const dodgeHint =
+    document.getElementById("dodgeHint");
+
+  let dodgeCount = 0;
+
+
+  function dodge() {
+
+    dodgeBtn.classList.add(
+      "is-dodging"
+    );
+
+    const sceneRect =
+      dodgeScene.getBoundingClientRect();
+
+    const btnWidth =
+      dodgeBtn.offsetWidth;
+
+    const btnHeight =
+      dodgeBtn.offsetHeight;
+
+    const padding = 24;
+
+    const maxX =
+      Math.max(
+        sceneRect.width -
+        btnWidth -
+        padding * 2,
+        0
+      );
+
+    const maxY =
+      Math.max(
+        sceneRect.height -
+        btnHeight -
+        padding * 2,
+        0
+      );
+
+    const x =
+      padding +
+      Math.random() * maxX;
+
+    const y =
+      padding +
+      Math.random() * maxY;
+
+    dodgeBtn.style.left = `${x}px`;
+    dodgeBtn.style.top = `${y}px`;
+
+
+    if (dodgeHint) {
+
+      dodgeHint.textContent =
+        dodgeMessages[
+          dodgeCount % dodgeMessages.length
+        ];
+
+      dodgeHint.classList.add(
+        "is-visible"
+      );
+
+    }
+
+    dodgeCount++;
+
+  }
+
+
+  dodgeBtn.addEventListener(
+    "mouseenter",
+    dodge
+  );
+
+  dodgeBtn.addEventListener(
+    "touchstart",
+    event => {
+
+      event.preventDefault();
+
+      dodge();
+
+    },
+    { passive: false }
+  );
+
+  dodgeBtn.addEventListener(
+    "click",
+    event => {
+
+      event.preventDefault();
+
+      dodge();
+
+    }
+  );
+
+}
+
+
+// =====================================================
+// CARTA / ENVELOPE (data)
+// =====================================================
+
+function initEnvelope() {
+
+  const envelope =
+    document.getElementById("envelope");
+
+  const dateReveal =
+    document.getElementById("dateReveal");
+
+  if (!envelope || !dateReveal) {
+    return;
+  }
+
+  // Reset (importante para funcionar de novo no replay)
+  envelope.classList.remove("is-open");
+  dateReveal.classList.remove("is-visible");
+
+  if (envelope.dataset.bound) {
+    return;
+  }
+
+  envelope.dataset.bound = "1";
+
+  envelope.addEventListener(
+    "click",
+    () => {
+
+      if (envelope.classList.contains("is-open")) {
+        return;
+      }
+
+      envelope.classList.add("is-open");
+      dateReveal.classList.add("is-visible");
+
+      setTimeout(
+        () => {
+
+          if (
+            currentScene === 5 &&
+            !transitionLocked
+          ) {
+
+            nextScene();
+
+          }
+
+        },
+        2200
+      );
+
+    }
+  );
+
+}
+
+
+// =====================================================
+// SEGURAR PARA REVELAR (declaração final)
+// =====================================================
+
+const holdHeartState = { done: false };
+
+function initHoldHeart() {
+
+  const wrap =
+    document.getElementById("holdHeartWrap");
+
+  const heartBtn =
+    document.getElementById("holdHeart");
+
+  const ring =
+    document.getElementById("holdHeartRing");
+
+  const text =
+    document.getElementById("declarationText");
+
+  if (!heartBtn || !ring || !text || !wrap) {
+    return;
+  }
+
+  // Reset (importante para funcionar de novo no replay)
+  wrap.classList.remove("is-done");
+  text.classList.remove("is-visible");
+  heartBtn.classList.remove("is-holding");
+  ring.style.strokeDashoffset = 283;
+
+  /*
+     "done" precisa viver aqui fora, e não dentro dos
+     listeners abaixo — eles só são criados UMA vez
+     (por causa do dataset.bound), então se "done" fosse
+     uma variável local ali dentro, ficaria travada em
+     true para sempre depois da primeira vez, e o coração
+     nunca mais funcionaria num replay.
+  */
+
+  holdHeartState.done = false;
+
+  if (heartBtn.dataset.bound) {
+    return;
+  }
+
+  heartBtn.dataset.bound = "1";
+
+  const HOLD_DURATION = 1400;
+
+  let holdStart = null;
+  let holdFrame = null;
+
+
+  function step() {
+
+    const elapsed =
+      Date.now() - holdStart;
+
+    const progress =
+      Math.min(
+        elapsed / HOLD_DURATION,
+        1
+      );
+
+    ring.style.strokeDashoffset =
+      283 - (283 * progress);
+
+    if (progress >= 1) {
+
+      complete();
+
+      return;
+
+    }
+
+    holdFrame =
+      requestAnimationFrame(step);
+
+  }
+
+
+  function startHold(event) {
+
+    if (holdHeartState.done) {
+      return;
+    }
+
+    event.preventDefault();
+
+    heartBtn.classList.add("is-holding");
+
+    holdStart = Date.now();
+
+    holdFrame =
+      requestAnimationFrame(step);
+
+  }
+
+
+  function cancelHold() {
+
+    if (holdHeartState.done) {
+      return;
+    }
+
+    heartBtn.classList.remove("is-holding");
+
+    cancelAnimationFrame(holdFrame);
+
+    ring.style.strokeDashoffset = 283;
+
+  }
+
+
+  function complete() {
+
+    holdHeartState.done = true;
+
+    cancelAnimationFrame(holdFrame);
+
+    wrap.classList.add("is-done");
+
+    text.classList.add("is-visible");
+
+    setTimeout(
+      () => {
+
+        if (
+          currentScene === 13 &&
+          !transitionLocked
+        ) {
+
+          nextScene();
+
+        }
+
+      },
+      2600
+    );
+
+  }
+
+
+  heartBtn.addEventListener(
+    "mousedown",
+    startHold
+  );
+
+  heartBtn.addEventListener(
+    "touchstart",
+    startHold,
+    { passive: false }
+  );
+
+  heartBtn.addEventListener(
+    "mouseup",
+    cancelHold
+  );
+
+  heartBtn.addEventListener(
+    "mouseleave",
+    cancelHold
+  );
+
+  heartBtn.addEventListener(
+    "touchend",
+    cancelHold
+  );
+
+  heartBtn.addEventListener(
+    "touchcancel",
+    cancelHold
+  );
+
+}
 
 // =====================================================
 // CARROSSEL

@@ -76,9 +76,25 @@
           Mas você vai ter que continuar...
         </p>
 
-        <button class="continue-btn">
-          continuar
-        </button>
+        <div class="btn-row">
+
+          <button class="continue-btn">
+            continuar
+          </button>
+
+          <button
+            class="dodge-btn"
+            id="dodgeBtn"
+          >
+            não quero
+          </button>
+
+        </div>
+
+        <p
+          class="dodge-hint"
+          id="dodgeHint"
+        ></p>
 
       </div>
 
@@ -117,7 +133,25 @@
 
     <section class="scene date-scene">
 
-      <p>
+      <div
+        class="envelope"
+        id="envelope"
+      >
+
+        <div class="envelope-seal">
+          ♥
+        </div>
+
+        <p class="envelope-hint">
+          toque para abrir
+        </p>
+
+      </div>
+
+      <p
+        class="date-reveal"
+        id="dateReveal"
+      >
         04 de setembro de 2025.
       </p>
 
@@ -413,7 +447,53 @@
 
     <section class="scene declaration">
 
-      <p>
+      <div
+        class="hold-heart-wrap"
+        id="holdHeartWrap"
+      >
+
+        <button
+          class="hold-heart"
+          id="holdHeart"
+          aria-label="segurar para revelar"
+        >
+
+          <svg
+            class="hold-heart-ring"
+            viewBox="0 0 100 100"
+          >
+
+            <circle
+              class="hold-heart-ring-bg"
+              cx="50"
+              cy="50"
+              r="45"
+            ></circle>
+
+            <circle
+              class="hold-heart-ring-fg"
+              id="holdHeartRing"
+              cx="50"
+              cy="50"
+              r="45"
+            ></circle>
+
+          </svg>
+
+          <span class="hold-heart-icon">♥</span>
+
+        </button>
+
+        <p class="hold-heart-label">
+          segure para revelar
+        </p>
+
+      </div>
+
+      <p
+        class="declaration-text"
+        id="declarationText"
+      >
         Eu te amo, minha princesa.
       </p>
 

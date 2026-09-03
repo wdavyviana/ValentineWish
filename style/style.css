@@ -168,6 +168,97 @@ body {
 }
 
 
+.btn-row {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+
+  gap: 20px;
+
+}
+
+
+.dodge-btn {
+
+  border: 1px solid rgba(243, 236, 226, 0.18);
+
+  background: transparent;
+
+  color: var(--text-muted);
+
+  font-family: inherit;
+
+  font-size: 0.9rem;
+
+  font-weight: 400;
+
+  letter-spacing: -0.01em;
+
+  padding: 12px 22px;
+
+  border-radius: 999px;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+
+}
+
+.dodge-btn:hover {
+
+  color: var(--text);
+
+  border-color: rgba(243, 236, 226, 0.35);
+
+}
+
+.dodge-btn.is-dodging {
+
+  position: absolute;
+
+  z-index: 20;
+
+  transition:
+    left 0.2s ease,
+    top 0.2s ease;
+
+}
+
+
+p.dodge-hint {
+
+  margin-top: 0 !important;
+
+  font-family: var(--font-sans);
+
+  font-size: 0.8rem;
+
+  letter-spacing: -0.01em;
+
+  color: var(--text-muted);
+
+  opacity: 0;
+
+  height: 1em;
+
+  transition: opacity 0.3s ease;
+
+}
+
+.dodge-hint.is-visible {
+
+  opacity: 0.85;
+
+}
+
+
 @media (max-width: 600px) {
 
   .interactive-scene div {
@@ -287,7 +378,101 @@ body {
    DATA
 ========================================= */
 
-.date-scene p {
+.envelope {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 16px;
+
+  cursor: pointer;
+
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+
+}
+
+.envelope.is-open {
+
+  opacity: 0;
+
+  transform: scale(0.85);
+
+  pointer-events: none;
+
+}
+
+.envelope-seal {
+
+  width: 84px;
+  height: 84px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 2rem;
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-soft),
+      var(--accent-deep)
+    );
+
+  box-shadow:
+    0 10px 30px rgba(209, 71, 107, 0.35);
+
+  transition: transform 0.3s ease;
+
+}
+
+.envelope:hover .envelope-seal {
+
+  transform: scale(1.06);
+
+}
+
+p.envelope-hint {
+
+  font-family: var(--font-sans);
+
+  font-size: 0.85rem;
+
+  letter-spacing: -0.01em;
+
+  color: var(--text-muted);
+
+}
+
+
+p.date-reveal {
+
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.85);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
 
   font-family: var(--font-serif);
 
@@ -302,13 +487,21 @@ body {
 
   letter-spacing: 0.04em;
 
-  position: relative;
-
   padding-bottom: 22px;
 
 }
 
-.date-scene p::after {
+.date-reveal.is-visible {
+
+  opacity: 1;
+
+  transform:
+    translate(-50%, -50%)
+    scale(1);
+
+}
+
+.date-reveal::after {
 
   content: "";
 
@@ -749,7 +942,146 @@ body {
    DECLARAÇÃO
 ========================================= */
 
-.declaration p {
+.hold-heart-wrap {
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 18px;
+
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+
+}
+
+.hold-heart-wrap.is-done {
+
+  opacity: 0;
+
+  transform: scale(0.85);
+
+  pointer-events: none;
+
+}
+
+.hold-heart {
+
+  position: relative;
+
+  width: 110px;
+  height: 110px;
+
+  border: none;
+
+  background: transparent;
+
+  padding: 0;
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  -webkit-tap-highlight-color: transparent;
+
+}
+
+.hold-heart-ring {
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  transform: rotate(-90deg);
+
+}
+
+.hold-heart-ring-bg {
+
+  fill: none;
+
+  stroke: rgba(243, 236, 226, 0.15);
+
+  stroke-width: 4;
+
+}
+
+.hold-heart-ring-fg {
+
+  fill: none;
+
+  stroke: var(--accent-soft);
+
+  stroke-width: 4;
+
+  stroke-linecap: round;
+
+  stroke-dasharray: 283;
+
+  stroke-dashoffset: 283;
+
+  transition: stroke-dashoffset 0.05s linear;
+
+}
+
+.hold-heart-icon {
+
+  font-size: 2.6rem;
+
+  color: var(--accent-soft);
+
+  text-shadow:
+    0 0 20px rgba(209, 71, 107, 0.5);
+
+  transition: transform 0.15s ease;
+
+}
+
+.hold-heart.is-holding .hold-heart-icon {
+
+  transform: scale(1.15);
+
+}
+
+p.hold-heart-label {
+
+  font-family: var(--font-sans);
+
+  font-size: 0.85rem;
+
+  letter-spacing: -0.01em;
+
+  color: var(--text-muted);
+
+}
+
+p.declaration-text {
+
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.85);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
 
   font-family: var(--font-serif);
 
@@ -770,6 +1102,16 @@ body {
 
   text-shadow:
     0 0 30px rgba(209, 71, 107, 0.35);
+
+}
+
+.declaration-text.is-visible {
+
+  opacity: 1;
+
+  transform:
+    translate(-50%, -50%)
+    scale(1);
 
 }
 
